@@ -9,7 +9,7 @@
 </head>
 <body>
 <div id="main">
-    <input id="leftBar" type="range" class="vertical noselect">
+    
 
     <span class="material-icons noselect" id="rightWinOpen">
             call_received
@@ -37,8 +37,11 @@
         </span>
     </div>
 
-
+    <input id="leftBar" type="range" class="vertical noselect">
     <div id="mainWin">
+        <span class="material-icons noselect" id="fixCheckbox">
+            check_box_outline_blank
+        </span>
         <span class="material-icons noselect" id="flipButton">
             flip_camera_android
         </span>
@@ -62,6 +65,10 @@
     const maxIcon = 'fullscreen'
     const minIcon = 'fullscreen_exit'
 
+    let fixed = false
+    const checked = 'check_box'
+    const unchecked = 'check_box_outline_blank'
+
     $(() => {
         $('#flipButton').on('click', ()=>{
           if(front) {
@@ -70,6 +77,19 @@
               $('#mainWin').css('background-image', 'url(' + frontImg + ')')
           }
           front = !front
+        })
+        $('#fixCheckbox').on('click', ()=>{
+            if(fixed) {
+                $('#fixCheckbox').text(unchecked)
+            } else {
+                $('#fixCheckbox').text(checked)
+                const leftBar = $('#leftBar')
+                const rightBar = $('#rightBar')
+                const mean = leftBar.val()/2 + rightBar.val()/2
+                leftBar.val(mean)
+                rightBar.val(mean)
+            }
+            fixed = !fixed
         })
         $('#rightWinClose').on('click', ()=>{
             if (rightMax) {
@@ -114,6 +134,18 @@
                 $('#leftWin').css('width', bigWidth).css('height', bigHeight)
             }
             leftMax = !leftMax
+        })
+
+        $('#leftBar').on('input', v=>{
+            if(fixed) {
+                $('#rightBar').val($(v.target).val())
+            }
+        })
+
+        $('#rightBar').on('input', v=>{
+            if(fixed) {
+                $('#leftBar').val($(v.target).val())
+            }
         })
     })
 </script>
