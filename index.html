@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tubebot controll</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="style.css" type="text/css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.js" integrity="sha256-DrT5NfxfbHvMHux31Lkhxg42LY6of8TaYyK50jnxRnM=" crossorigin="anonymous"></script>
+</head>
+<body>
+<div id="main">
+    <input id="leftBar" type="range" class="vertical noselect">
+
+    <span class="material-icons noselect" id="rightWinOpen">
+            call_received
+    </span>
+    <div id="rightWin">
+        <input id="rightWinBar" type="range" class="vertical noselect">
+        <span class="material-icons noselect" id="rightWinClose">
+            call_received
+        </span>
+        <span class="material-icons noselect" id="rightWinMaxMin">
+            fullscreen
+        </span>
+    </div>
+
+    <span class="material-icons noselect" id="leftWinOpen">
+            call_received
+    </span>
+    <div id="leftWin">
+        <input id="leftWinBar" type="range" class="vertical noselect">
+        <span class="material-icons noselect" id="leftWinClose">
+            call_received
+        </span>
+        <span class="material-icons noselect" id="leftWinMaxMin">
+            fullscreen
+        </span>
+    </div>
+
+
+    <div id="mainWin">
+        <span class="material-icons noselect" id="flipButton">
+            flip_camera_android
+        </span>
+    </div>
+    <input id="rightBar" type="range" class="vertical noselect">
+</div>
+<script>
+    const frontImg = 'front.png'
+    const backImg = 'back.png'
+    let front = true
+
+    let rightMax = false
+    let leftMax = false
+
+    const bigWidth = 780
+    const bigHeight = 585
+
+    const smallWidth = 270
+    const smallHeight = 200
+
+    const maxIcon = 'fullscreen'
+    const minIcon = 'fullscreen_exit'
+
+    $(() => {
+        $('#flipButton').on('click', ()=>{
+          if(front) {
+              $('#mainWin').css('background-image', 'url(' + backImg + ')')
+          } else {
+              $('#mainWin').css('background-image', 'url(' + frontImg + ')')
+          }
+          front = !front
+        })
+        $('#rightWinClose').on('click', ()=>{
+            if (rightMax) {
+                $('#rightWinMaxMin').click()
+            }
+            $('#rightWin').toggle()
+        })
+        $('#rightWinOpen').on('click', ()=>{
+            $('#rightWin').toggle()
+        })
+        $('#rightWinMaxMin').on('click', ()=>{
+            if (leftMax) {
+                $('#leftWinMaxMin').click()
+            }
+            if (rightMax) {
+                $('#rightWinMaxMin').text(maxIcon)
+                $('#rightWin').css('width', smallWidth).css('height', smallHeight)
+            } else {
+                $('#rightWinMaxMin').text(minIcon)
+                $('#rightWin').css('width', bigWidth).css('height', bigHeight)
+            }
+            rightMax = !rightMax
+        })
+        $('#leftWinClose').on('click', ()=>{
+            if (leftMax) {
+                $('#leftWinMaxMin').click()
+            }
+            $('#leftWin').toggle()
+        })
+        $('#leftWinOpen').on('click', ()=>{
+            $('#leftWin').toggle()
+        })
+        $('#leftWinMaxMin').on('click', ()=>{
+            if (rightMax) {
+                $('#rightWinMaxMin').click()
+            }
+            if (leftMax) {
+                $('#leftWinMaxMin').text(maxIcon)
+                $('#leftWin').css('width', smallWidth).css('height', smallHeight)
+            } else {
+                $('#leftWinMaxMin').text(minIcon)
+                $('#leftWin').css('width', bigWidth).css('height', bigHeight)
+            }
+            leftMax = !leftMax
+        })
+    })
+</script>
+</body>
+</html>
